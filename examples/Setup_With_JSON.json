@@ -1,0 +1,177 @@
+{
+
+"Appliance" : {
+		"IP" : "15.215.17.33",
+		"Username" : "Administrator",
+		"Password" : "Welcome123"
+	},
+
+"EthernetNetwork": [
+	{
+		"prefix": "Lan_",
+		"vlanid_start": 501,
+		"count": 4,
+		"networkset": "LAN_Network",
+		"purpose": "Management",
+		"preferredBandwidth": 5000,
+		"maximumBandwidth": 8000,
+		"privateNetwork": "true",
+		"smartLink": "false"
+	},
+	{
+		"prefix": "Sandbox_",
+		"vlanid_start": 601,
+		"count": 4,
+		"networkset": "Sandbox_Network",
+		"purpose": "Management",
+		"preferredBandwidth": 5000,
+		"maximumBandwidth": 8000,
+		"privateNetwork": "true",
+		"smartLink": "false"
+	}
+	],
+	
+"FCNetwork": [
+	{
+		"name": "SAN_Fab_A",
+		"prefix": "",
+		"count": 1,
+		"preferredBandwidth": 5000,
+		"maximumBandwidth": 8000,
+		"uplinkBandwidth": "Four_Gbps",
+		"autoLoginRedistribution": true,
+		"linkStabilityTime": 30	,
+		"fabricType": "FabricAttach"
+	},
+	
+	{
+		"name": "SAN_Fab_B",
+		"prefix": "",
+		"count": 1,
+		"preferredBandwidth": 5000,
+		"maximumBandwidth": 8000,
+		"uplinkBandwidth": "Four_Gbps",
+		"autoLoginRedistribution": true,
+		"linkStabilityTime": 30,
+		"fabricType": "FabricAttach"
+	}
+	],
+
+
+    "LogicalSwitchTemplate" : {
+    		"Name" : "LST1",
+    		"Description":  "",
+		"switches" : [
+			{
+				"Bay" : 1,
+				"Enclosure" : 1,
+				"PermittedSwitchType" : "HP VC FlexFabric 10Gb/24-Port Module"
+			},
+			{
+				"Bay" : 2,
+				"Enclosure" : 1,
+				"PermittedSwitchType" : "HP VC FlexFabric 10Gb/24-Port Module"
+			}
+		
+		
+		],
+	
+		"uplinks" : [
+			{
+				"UplinkName" : "Sandbox_LAN",
+				"Type" : "Ethernet",
+				"ConnectionMode" : "Auto",
+				"Networks" : ["Lan_501", "Lan_502"],
+				"UplinkPorts" : [
+					{
+						"Port" : "X5",
+						"Bay" : 1,
+						"Enclosure"  : 1
+					},
+					{
+						"Port" : "X6",
+						"Bay" : 1,
+						"Enclosure"  : 1
+					},
+					{
+						"Port" : "X5",
+						"Bay" : 2,
+						"Enclosure"  : 1
+					},
+					{
+						"Port" : "X6",
+						"Bay" : 2,
+						"Enclosure"  : 1
+					}
+				]
+			},
+			{
+				"UplinkName" : "SAN_A",
+				"Type" : "FibreChannel",
+				"ConnectionMode" : "Auto",
+				"Networks" : ["SAN_Fab_A"],
+				"UplinkPorts": [
+					{
+						"Port" : "X1",
+						"Bay" : 1,
+						"Enclosure"  : 1
+					},
+					{
+						"Port" : "X2",
+						"Bay" : 1,
+						"Enclosure"  : 1
+					}
+				]
+			}
+		
+		]
+	
+	},
+	
+	"EnclosureGroup" : {
+		"Name" : "EnclosureGrp1",
+		"EnclosureType" : "BladeSystem c7000 Enclosure G2",
+		"LogicalSwitchTemplate" : "LST1",
+		"InterconnectBayMappingCount" : 8
+	},
+	
+	"Enclosure" : {
+		"Hostname" : "172.18.1.13",
+		"EnclosureGroup" : "EnclosureGrp1",
+		"Username" : "dcs",
+		"Password" : "dcs"
+	},
+
+"Update" : {
+
+    "LogicalSwitchTemplate" : {
+		"Name" : "LST1",
+		"Description":  "Logical Interconnect Group description added by networking.update_lig API",
+		
+		"uplinks" : [					
+			{
+				"UplinkName" : "SAN_B",
+				"Type" : "FibreChannel",
+				"ConnectionMode" : "Auto",
+				"Networks" : ["SAN_Fab_B"],
+				"UplinkPorts" : [
+					{
+						"Port" : "X1",
+						"Bay" : 2,
+						"Enclosure"  : 1
+					},
+					{
+						"Port" : "X2",
+						"Bay" : 2,
+						"Enclosure"  : 1
+					}
+				]
+			}
+
+		]
+		
+		
+		}
+}
+
+}

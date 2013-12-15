@@ -72,7 +72,7 @@ class networking(object):
 
     def update_lig(self, lig):
         global uri
-        return self._activity.make_task_entity_tuple(self._con.put(uri['lig'],
+        return self._activity.make_task_entity_tuple(self._con.put(lig['uri'],
                                                         lig))
 
     def delete_lig(self, lig, blocking=True, verbose=False):
@@ -85,6 +85,29 @@ class networking(object):
     def get_ligs(self):
         global uri
         return get_members(self._con.get(uri['lig']))
+
+    def get_lig_by_name(self, ligname):
+        global uri
+        return self._con.get_entity_byfield(uri['lig'], "name", ligname)
+
+    def get_interconnect_types(self):
+        global uri
+        # get all the supported interconnect types
+        resp = get_members(self._con.get(uri['ictype']))
+        return resp
+
+    def get_lis(self):
+        global uri
+        return get_members(self._con.get(uri["li"]))
+
+    def get_li_by_name(self, liname):
+        global uri
+        return self._con.get_entity_byfield(uri['li'], "name", liname)
+
+    def get_lis_noncompliant(self):
+        global uri
+        return self._con.get_entity_byfield(uri['li'], "consistencyStatus",
+                                            "consistencyStatus")
 
     ###########################################################################
     # Connection Templates
@@ -199,5 +222,13 @@ class networking(object):
     def get_fc_networks(self):
         global uri
         return get_members(self._con.get(uri['fcnet']))
+
+    def get_enet_network_by_name(self, nwname):
+        global uri
+        return self._con.get_entity_byfield(uri['enet'], "name", nwname)
+
+    def get_fc_network_by_name(self, nwname):
+        global uri
+        return self._con.get_entity_byfield(uri['fcnet'], "name", nwname)
 
 # vim:set shiftwidth=4 tabstop=4 expandtab textwidth=79:

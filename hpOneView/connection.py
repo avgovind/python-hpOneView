@@ -41,6 +41,8 @@ import json
 import shutil  # for shutil.copyfileobj()
 import mmap  # so we can upload the iso without having to load it in memory
 import os
+import sys
+import time
 
 from hpOneView.common import *
 from hpOneView.exceptions import *
@@ -218,7 +220,7 @@ class connection(object):
         conn.close()
         return response, body
 
-    def get_content_type(filename):
+    def get_content_type(self, filename):
         return 'application/octet-stream'
 
     ###########################################################################
